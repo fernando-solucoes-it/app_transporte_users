@@ -1,0 +1,22 @@
+{
+  "flutter": {
+    "platforms": {
+      "android": {
+        "default": {
+          "projectId": "app-transporte-45c1e",
+          "appId": "1:809276814837:android:53ae2584990387721fdcbc",
+          "fileOutput": "android/app/google-services.json"
+        }
+      },
+      "dart": {
+        "lib/firebase_options.dart": {
+          "projectId": "app-transporte-45c1e",
+          "configurations": {
+            "android": "1:809276814837:android:53ae2584990387721fdcbc",
+            "ios": "1:809276814837:ios:13075ed791c6e4101fdcbc"
+          }
+        }
+      }
+    }
+  }
+}
