@@ -144,7 +144,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           labelStyle: TextStyle(
                             fontSize: 15,
                           )),
-                      style: TextStyle(color: Colors.grey),
+                      style: const TextStyle(color: Colors.grey),
                     ),
 
                     const SizedBox(
@@ -156,11 +156,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       obscureText: true,
                       keyboardType: TextInputType.text,
                       decoration: const InputDecoration(
-                          labelText: "User Passworld",
+                          labelText: "User Passconst const world",
                           labelStyle: TextStyle(
                             fontSize: 15,
                           )),
-                      style: TextStyle(color: Colors.grey),
+                      style: const TextStyle(color: Colors.grey),
                     ),
 
                     const SizedBox(
