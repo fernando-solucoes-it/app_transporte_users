@@ -92,7 +92,7 @@ class _LoginScreenState extends State<LoginScreen> {
     return Scaffold(
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(10),
+          padding: const EdgeInsets.all(5),
           child: Column(
             children: [
               Image.asset("assets/images/logo.png"),
@@ -120,7 +120,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       decoration: const InputDecoration(
                           labelText: "User Email",
                           labelStyle: TextStyle(
-                            fontSize: 15,
+                            fontSize: 14,
                           )),
                       style: TextStyle(color: Colors.grey),
                     ),
@@ -136,7 +136,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       decoration: const InputDecoration(
                           labelText: "User Passworld",
                           labelStyle: TextStyle(
-                            fontSize: 15,
+                            fontSize: 14,
                           )),
                       style: const TextStyle(color: Colors.grey),
                     ),
@@ -152,7 +152,8 @@ class _LoginScreenState extends State<LoginScreen> {
                       },
                       style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.amber,
-                          padding: const EdgeInsets.symmetric(horizontal: 80)),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 40, vertical: 10)),
                       child: const Text(
                         "Log in",
                         style: TextStyle(color: Colors.white, fontSize: 15),
