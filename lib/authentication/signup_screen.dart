@@ -17,30 +17,31 @@ class SignUpScreen extends StatefulWidget {
 }
 
 class _SignUpScreenState extends State<SignUpScreen> {
-  TextEditingController usernameTextEditingController = TextEditingController();
+  TextEditingController userNameTextEditingController = TextEditingController();
+  TextEditingController userPhoneTextEditingController =
+      TextEditingController();
   TextEditingController emailTextEditingController = TextEditingController();
-  TextEditingController phoneTextEditingController = TextEditingController();
   TextEditingController passwordTextEditingController = TextEditingController();
   CommonMethods cMethods = CommonMethods();
 
-  checkNetwork() {
+  checkIfNetworkIsAvailable() {
     cMethods.checkConnectivity(context);
 
     signUpFormValidation();
   }
 
   signUpFormValidation() {
-    if (usernameTextEditingController.text.trim().length < 3) {
+    if (userNameTextEditingController.text.trim().length < 3) {
       cMethods.displaySnackBar(
-          "your name must be at least 3 or more characters.", context);
-    } else if (phoneTextEditingController.text.trim().length < 7) {
+          "your name must be atleast 4 or more characters.", context);
+    } else if (userPhoneTextEditingController.text.trim().length < 7) {
       cMethods.displaySnackBar(
-          "your phone must be at least 8 or more characters.", context);
+          "your phone number must be atleast 8 or more characters.", context);
     } else if (!emailTextEditingController.text.contains("@")) {
-      cMethods.displaySnackBar("enter with a valid e-mail.", context);
-    } else if (passwordTextEditingController.text.trim().length <= 5) {
+      cMethods.displaySnackBar("please write valid email.", context);
+    } else if (passwordTextEditingController.text.trim().length < 5) {
       cMethods.displaySnackBar(
-          "your password, must be at least 6 characters", context);
+          "your password must be atleast 6 or more characters.", context);
     } else {
       registerNewUser();
     }
@@ -56,11 +57,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
     final User? userFirebase = (await FirebaseAuth.instance
             .createUserWithEmailAndPassword(
-                email: emailTextEditingController.text.trim(),
-                password: passwordTextEditingController.text.trim())
+      email: emailTextEditingController.text.trim(),
+      password: passwordTextEditingController.text.trim(),
+    )
             .catchError((errorMsg) {
       Navigator.pop(context);
-      cMethods.displaySnackBar(errorMsg, context);
+      cMethods.displaySnackBar(errorMsg.toString(), context);
     }))
         .user;
 
@@ -69,15 +71,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
     DatabaseReference usersRef =
         FirebaseDatabase.instance.ref().child("users").child(userFirebase!.uid);
-
     Map userDataMap = {
-      "name": usernameTextEditingController.text.trim(),
+      "name": userNameTextEditingController.text.trim(),
       "email": emailTextEditingController.text.trim(),
-      "phone": phoneTextEditingController.text.trim(),
+      "phone": userPhoneTextEditingController.text.trim(),
       "id": userFirebase.uid,
       "blockStatus": "no",
     };
-
     usersRef.set(userDataMap);
 
     Navigator.push(context, MaterialPageRoute(builder: (c) => HomePage()));
@@ -101,106 +101,111 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 ),
               ),
 
-              //Text Fields
+              //text fields + button
               Padding(
                 padding: const EdgeInsets.all(22),
                 child: Column(
                   children: [
                     TextField(
-                      controller: usernameTextEditingController,
+                      controller: userNameTextEditingController,
                       keyboardType: TextInputType.text,
                       decoration: const InputDecoration(
-                          labelText: "User Name",
-                          labelStyle: TextStyle(
-                            fontSize: 15,
-                          )),
-                      style: TextStyle(color: Colors.grey),
+                        labelText: "User Name",
+                        labelStyle: TextStyle(
+                          fontSize: 14,
+                        ),
+                      ),
+                      style: const TextStyle(
+                        color: Colors.grey,
+                        fontSize: 15,
+                      ),
                     ),
-
                     const SizedBox(
                       height: 22,
                     ),
-
                     TextField(
-                      controller: phoneTextEditingController,
-                      keyboardType: TextInputType.phone,
+                      controller: userPhoneTextEditingController,
+                      keyboardType: TextInputType.text,
                       decoration: const InputDecoration(
-                          labelText: "User Phone",
-                          labelStyle: TextStyle(
-                            fontSize: 15,
-                          )),
-                      style: TextStyle(color: Colors.grey),
+                        labelText: "User Phone",
+                        labelStyle: TextStyle(
+                          fontSize: 14,
+                        ),
+                      ),
+                      style: const TextStyle(
+                        color: Colors.grey,
+                        fontSize: 15,
+                      ),
                     ),
-
                     const SizedBox(
                       height: 22,
                     ),
-
                     TextField(
                       controller: emailTextEditingController,
-                      keyboardType: TextInputType.visiblePassword,
+                      keyboardType: TextInputType.emailAddress,
                       decoration: const InputDecoration(
-                          labelText: "User Email",
-                          labelStyle: TextStyle(
-                            fontSize: 15,
-                          )),
-                      style: const TextStyle(color: Colors.grey),
+                        labelText: "User Email",
+                        labelStyle: TextStyle(
+                          fontSize: 14,
+                        ),
+                      ),
+                      style: const TextStyle(
+                        color: Colors.grey,
+                        fontSize: 15,
+                      ),
                     ),
-
                     const SizedBox(
                       height: 22,
                     ),
-
                     TextField(
                       controller: passwordTextEditingController,
                       obscureText: true,
                       keyboardType: TextInputType.text,
                       decoration: const InputDecoration(
-                          labelText: "User Passconst const world",
-                          labelStyle: TextStyle(
-                            fontSize: 15,
-                          )),
-                      style: const TextStyle(color: Colors.grey),
+                        labelText: "User Password",
+                        labelStyle: TextStyle(
+                          fontSize: 14,
+                        ),
+                      ),
+                      style: const TextStyle(
+                        color: Colors.grey,
+                        fontSize: 15,
+                      ),
                     ),
-
                     const SizedBox(
-                      height: 22,
+                      height: 32,
                     ),
-
-                    //text fields + button
                     ElevatedButton(
                       onPressed: () {
-                        checkNetwork();
+                        checkIfNetworkIsAvailable();
                       },
                       style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.amber,
-                          padding: const EdgeInsets.symmetric(horizontal: 80)),
-                      child: const Text(
-                        "Sign up",
-                        style: TextStyle(color: Colors.white, fontSize: 15),
-                      ),
-                    ),
-
-                    //textbuttom
-                    TextButton(
-                      onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (c) => const LoginScreen()));
-                      },
-                      child: const Text(
-                        "Already have an Account? Login Here",
-                        style: TextStyle(color: Colors.grey),
-                      ),
-                    ),
-
-                    const SizedBox(
-                      height: 22,
+                          backgroundColor: Colors.purple,
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 80, vertical: 10)),
+                      child: const Text("Sign Up"),
                     ),
                   ],
                 ),
-              )
+              ),
+
+              const SizedBox(
+                height: 12,
+              ),
+
+              //textbutton
+              TextButton(
+                onPressed: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (c) => LoginScreen()));
+                },
+                child: const Text(
+                  "Already have an Account? Login Here",
+                  style: TextStyle(
+                    color: Colors.grey,
+                  ),
+                ),
+              ),
             ],
           ),
         ),
